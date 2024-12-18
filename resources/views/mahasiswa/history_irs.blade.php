@@ -92,11 +92,13 @@
                             </tfoot>
                         </table>
 
-                        @if ($item->semester === Auth::user()->mahasiswa->semester)
-                            <a href="{{ route('printIRS', $item->nim_mahasiswa) }}" class="py-2 px-3 bg-red-500 hover:bg-red-600 text-white text-md rounded-lg shadow-md">
+                        @if ($item->status === 'sudah_disetujui')
+                            <a href="{{ route('printIRS', ['nim' => $item->nim_mahasiswa, 'semester' => $item->semester]) }}" 
+                                class="py-2 px-3 bg-red-500 hover:bg-red-600 text-white text-md rounded-lg shadow-md">
                                 Print IRS
                             </a>
                         @endif
+
                     </div>
                 </div>
             @endforeach

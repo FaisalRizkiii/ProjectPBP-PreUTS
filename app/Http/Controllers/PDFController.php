@@ -11,9 +11,7 @@ use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf ;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-
-
-
+use Illuminate\Support\Facades\Request as FacadesRequest;
 
 class PDFController extends Controller
 {
@@ -46,14 +44,14 @@ class PDFController extends Controller
         return $pdf->download('PRINT_IRS_MHS.pdf');
     }
 
-    public function viewIRS($nim)
-    {
+    public function viewIRS($nim, $semester)
+    {   
         $tahunAjaranAktif = Tahun::where('status', 'aktif')->first(['kode_tahun', 'bag_semester', 'tahun_akademik']);
         $mahasiswa = Mahasiswa::where('nim', $nim)->first();
     
         // Retrieve the IRS record for the active academic year
         $irs = IRS::where('nim_mahasiswa', $nim)
-            ->where('kode_tahun', $tahunAjaranAktif->kode_tahun)
+            ->where('semester', $semester)
             ->first(['id_irs', 'status']); // Use first() to get a single record
     
         // Handle the case where no IRS record is found
@@ -74,8 +72,16 @@ class PDFController extends Controller
         // Set locale and format the current date
         Carbon::setLocale('idn');
         $date = now()->translatedFormat('d F Y');
-    
+        // $data = [
+        //     'ListJadwal' => $ListJadwal,
+        //     'mahasiswa' => $mahasiswa,
+        //     'tahunAjaranAktif' => $tahunAjaranAktif,
+        //     'date' => $date,
+        // ];
         // Return the view with compacted data
-        return view('print_irs', compact(['ListJadwal', 'mahasiswa', 'tahunAjaranAktif', 'date']));
+        // return view('print_irs', ));
+        $pdf = Pdf::loadView('print_irs', compact(['ListJadwal', 'mahasiswa', 'tahunAjaranAktif', 'date']));
+        // return $pdf;
+        return $pdf->download('PRINT_IRS_MHS.pdf');
     }
 }

@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
             JadwalNowSeeder::class,
             nDetailIrs::class,
             nKHSSeeder::class,
-
+            PeriodeSeeder::class,
         ]);
     }
 }

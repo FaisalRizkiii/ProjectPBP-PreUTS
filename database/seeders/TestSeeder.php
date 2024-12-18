@@ -61,7 +61,7 @@ class TestSeeder extends Seeder
             'nim_mahasiswa' => '24060122130084',
             'semester' => '5',
             'kode_tahun' => '24/25GA',
-            'status' => 'sudah_disetujui'
+            'status' => 'belum_irs'
         ]);
 
         // Jadwal Semester 1

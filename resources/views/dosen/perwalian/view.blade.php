@@ -311,63 +311,65 @@
             if (historyIRS && historyIRS.length > 0) {
                 historyIRS.forEach((semester, index) => {
                   
-                    historyContent += `
-                    <div class="border-b last:border-b-0">
-                        <!-- Semester Header -->
-                        <button 
-                            onclick="toggleSemester(${semester.semester})"
-                            class="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50"
-                        >
-                            <div class="flex items-center gap-4">
-                                <span class="font-medium">Semester ${semester.semester}</span>
-                                <span class="text-gray-600">${semester.tahun_akademik}</span>
-                            </div>
-                            <svg 
-                                id="semester-icon-${semester.semester}"
-                                class="transform transition-transform text-gray-400"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                width="20"
-                                height="20"
-                            >
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
-                            </svg>
-                        </button>
-                    
-                        <!-- Expandable Content -->
-                        <div 
-                            id="semester-content-${semester.semester}"
-                            class="p-6 border-t bg-gray-50 hidden"
-                        >
-                            <table class="w-full bg-white">
-                                <thead>
-                                    <tr class="bg-gray-50">
-                                        <th class="px-4 py-3 text-left border">Kode MK</th>
-                                        <th class="px-4 py-3 text-left border">Mata Kuliah</th>
-                                        <th class="px-4 py-3 text-center border">SKS</th>
-                                        <th class="px-4 py-3 text-center border">Kelas</th>
-                                        <th class="px-4 py-3 text-center border">Hari</th>
-                                        <th class="px-4 py-3 text-center border">Waktu</th>
-                                        <th class="px-4 py-3 text-center border">Ruang</th>
-                                        <th class="px-4 py-3 text-center border">Status</th>
-                                        <th class="px-4 py-3 text-left border">Dosen</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ${generateJadwalRows(semester.jadwal)}
-                                </tbody>
-                                <tfoot>
-                                    <tr class="bg-gray-50">
-                                        <td colspan="2" class="px-4 py-3 font-medium border">Total SKS</td>
-                                        <td class="px-4 py-3 text-center font-medium border">${semester.total_sks}</td>
-                                        <td colspan="5" class="border"></td>
-                                    </tr>
-                                </tfoot>
-                            </table>
+                historyContent += `
+                <div class="border-b last:border-b-0">
+                    <!-- Semester Header -->
+                    <button 
+                        onclick="toggleSemesterIRS(${semester.semester})"
+                        class="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50"
+                    >
+                        <div class="flex items-center gap-4">
+                            <span class="font-medium">Semester ${semester.semester}</span>
+                            <span class="text-gray-600">${semester.tahun_akademik}</span>
                         </div>
-                    </div>`;
+                        <svg 
+                            id="semester-icon-${semester.semester}"
+                            class="transform transition-transform text-gray-400"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            width="20"
+                            height="20"
+                        >
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                        </svg>
+                    </button>
+
+                    <!-- Expandable Content -->
+                    <div 
+                        id="semester-content-${semester.semester}"
+                        class="p-6 border-t bg-gray-50 hidden"
+                    >
+                        <table class="w-full bg-white">
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="px-4 py-3 text-left border">Kode MK</th>
+                                    <th class="px-4 py-3 text-left border">Mata Kuliah</th>
+                                    <th class="px-4 py-3 text-center border">SKS</th>
+                                    <th class="px-4 py-3 text-center border">Kelas</th>
+                                    <th class="px-4 py-3 text-center border">Hari</th>
+                                    <th class="px-4 py-3 text-center border">Waktu</th>
+                                    <th class="px-4 py-3 text-center border">Ruang</th>
+                                    <th class="px-4 py-3 text-center border">Status</th>
+                                    <th class="px-4 py-3 text-left border">Dosen</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${generateJadwalRows(semester.jadwal)}
+                            </tbody>
+                            <tfoot>
+                                <tr class="bg-gray-50">
+                                    <td colspan="2" class="px-4 py-3 font-medium border">Total SKS</td>
+                                    <td class="px-4 py-3 text-center font-medium border">${semester.total_sks}</td>
+                                    <td colspan="5" class="border"></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        ${appendPrintButton(nim, semester)}
+                    </div>
+                </div>`;
+
                 });
 
                 $('#history-irs-container').html(historyContent);
@@ -384,25 +386,41 @@
     });
   });
 
-  // Function to generate jadwal rows
-  function generateJadwalRows(jadwal) {
-      return jadwal.map(item => `
-          <tr>
-              <td class="px-4 py-3 border">${item.kode_mk}</td>
-              <td class="px-4 py-3 border">${item.nama_mk}</td>
-              <td class="px-4 py-3 text-center border">${item.sks}</td>
-              <td class="px-4 py-3 text-center border">${item.kode_kelas}</td>
-              <td class="px-4 py-3 text-center border">${item.hari}</td>
-              <td class="px-4 py-3 text-center border">${item.jam_mulai} - ${item.jam_selesai}</td>
-              <td class="px-4 py-3 text-center border">${item.ruang}</td>
-              <td class="px-4 py-3 text-center border">${item.status.toUpperCase()}</td>
-              <td class="px-4 py-3 border">${item.dosen}</td>
-          </tr>
-      `).join('');
-  }
+
+    // Function to generate jadwal rows
+    function generateJadwalRows(jadwal) {
+        return jadwal.map(item => `
+            <tr>
+                <td class="px-4 py-3 border">${item.kode_mk}</td>
+                <td class="px-4 py-3 border">${item.nama_mk}</td>
+                <td class="px-4 py-3 text-center border">${item.sks}</td>
+                <td class="px-4 py-3 text-center border">${item.kode_kelas}</td>
+                <td class="px-4 py-3 text-center border">${item.hari}</td>
+                <td class="px-4 py-3 text-center border">${item.jam_mulai} - ${item.jam_selesai}</td>
+                <td class="px-4 py-3 text-center border">${item.ruang}</td>
+                <td class="px-4 py-3 text-center border">${item.status.toUpperCase()}</td>
+                <td class="px-4 py-3 border">${item.dosen}</td>
+            </tr>
+        `).join('');
+    }
+
+    // Append print button if status is "sudah_disetujui"
+    function appendPrintButton(nim, semester) {
+        if (semester.status === 'sudah_disetujui') {
+            return `
+                <div class="mt-4">
+                    <a href="{{ url('mhs/print_irs') }}/${nim}/${semester.semester}" 
+                        class="py-2 px-3 bg-red-500 hover:bg-red-600 text-white text-md rounded-lg shadow-md">
+                        Print IRS
+                    </a>
+                </div>`;
+        }
+        return '';
+    }
+
 
   // Function to toggle semester expand/collapse
-  function toggleSemester(semesterNumber) {
+  function toggleSemesterIRS(semesterNumber) {
       const contentEl = $(`#semester-content-${semesterNumber}`);
       const iconEl = $(`#semester-icon-${semesterNumber}`);
 
@@ -434,14 +452,14 @@
                     <div class="border-b last:border-b-0">
                         <!-- Semester Header -->
                         <button 
-                            onclick="toggleSemester(${semester.semester})"
+                            onclick="toggleSemesterKHS(${semester.semester})"
                             class="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50"
                         >
                             <div class="flex items-center gap-4">
                                 <span class="font-medium">Semester ${semester.semester}</span>
                             </div>
                             <svg 
-                                id="semester-icon-${semester.semester}"
+                                id="KHS-semester-icon-${semester.semester}"
                                 class="transform transition-transform text-gray-400"
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
@@ -456,7 +474,7 @@
                     
                         <!-- Expandable Content -->
                         <div 
-                            id="semester-content-${semester.semester}"
+                            id="KHS-semester-content-${semester.semester}"
                             class="p-6 border-t bg-gray-50 hidden"
                         >
                             <table class="w-full bg-white">
@@ -516,13 +534,14 @@ function generateKHSRows(mataKuliah) {
     `).join('');
 }
 
-function toggleSemester(semesterNumber) {
-      const contentEl = $(`#semester-content-${semesterNumber}`);
-      const iconEl = $(`#semester-icon-${semesterNumber}`);
+function toggleSemesterKHS(semesterNumber) {
+    console.log(semesterNumber);
+    const contentEl = $(`#KHS-semester-content-${semesterNumber}`);
+    const iconEl = $(`#KHS-semester-icon-${semesterNumber}`);
 
-      contentEl.toggleClass('hidden');
-      iconEl.toggleClass('rotate-180');
-  }
+    contentEl.toggleClass('hidden');
+    iconEl.toggleClass('rotate-180');
+}
 // Reuse the existing toggleSemester function from IRS
 </script>
 @include('footer')

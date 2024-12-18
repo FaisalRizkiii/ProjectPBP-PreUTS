@@ -309,6 +309,7 @@ class WaliController extends Controller
     
             return [
                 'semester' => $irs->semester,
+                'status' => $irs->status,
                 'tahun_akademik' => $irs->tahun->tahun_akademik ?? 'Tidak Tersedia',
                 'total_sks' => $totalSKS,
                 'jadwal' => $jadwalList
